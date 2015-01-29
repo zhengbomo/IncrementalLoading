@@ -1,5 +1,5 @@
 ## IncrementalLoadingDemo
- rementalLoading on Windows Phone 8.1
+ IncrementalLoading on Windows Phone 8.1
 
 ### Feature
 
