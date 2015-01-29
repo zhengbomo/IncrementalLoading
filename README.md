@@ -1,7 +1,8 @@
-# IncrementalLoading
-IncrementalLoading on Windows Phone 8.1
+## IncrementalLoadingDemo
+	IncrementalLoading on Windows Phone 8.1
 
-Feature
-	Caching Support
-	Refreshing
-	Loading
+### Feature
+
+ * Caching
+ * Support
+ * Loading
