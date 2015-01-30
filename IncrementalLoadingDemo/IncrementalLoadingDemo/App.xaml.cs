@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -19,6 +20,26 @@ namespace IncrementalLoadingDemo
         {
             InitializeComponent();
             Suspending += OnSuspending;
+
+            HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+        }
+
+        void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
+        {
+            var frame = Window.Current.Content as Frame;
+            if (frame !=null)
+            {
+                if (frame.CanGoBack)
+                {
+                    frame.GoBack();
+                    e.Handled = true;
+                }
+                else
+                {
+                    Exit();
+                }
+            }
+           
         }
 
         /// <summary>
