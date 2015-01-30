@@ -88,13 +88,20 @@
     </Compile>
     <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="Helpers\CacheManager.cs" />
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="SampleData\EmptyPageSampleData.cs" />
+    <Compile Include="SampleData\NormalPageSampleData.cs" />
+    <Compile Include="Views\EmptyPage.xaml.cs">
+      <DependentUpon>EmptyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleData\MainPageSampleData.cs" />
-    <Compile Include="Utility\IIncrementalSource.cs" />
     <Compile Include="Utility\IncrementalLoadingCollection.cs" />
+    <Compile Include="Views\NormalPage.xaml.cs">
+      <DependentUpon>NormalPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -114,9 +121,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
+    <Page Include="Views\EmptyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NormalPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">

@@ -1,7 +1,7 @@
 ﻿/* ==============================================================================
- * 功能描述：MainPageSampleData  
+ * 功能描述：NormalPageSampleData  
  * 创 建 者：贤凯
- * 创建日期：1/29/2015 9:34:09 PM
+ * 创建日期：1/30/2015 11:00:07 AM
  * ==============================================================================*/
 
 using System;
@@ -12,11 +12,11 @@ using IncrementalLoadingDemo.Utility;
 
 namespace IncrementalLoadingDemo.SampleData
 {
-    public class MainPageSampleData
+    public class NormalPageSampleData
     {
         public IncrementalLoadingCollection<string, List<string>> Source { get; set; }
 
-        public MainPageSampleData()
+        public NormalPageSampleData()
         {
             Source = new IncrementalLoadingCollection<string, List<string>>(
                 async () =>
@@ -35,7 +35,7 @@ namespace IncrementalLoadingDemo.SampleData
                     var list = new List<string>();
                     for (int i = 0; i < 50; i++)
                     {
-                        //list.Add("刷新数据" + i);
+                        list.Add("刷新数据" + i);
                     }
                     return list;
                 }, async pageCount =>
@@ -60,10 +60,10 @@ namespace IncrementalLoadingDemo.SampleData
                     await Task.Delay(1000);
 
                     //刷新显示更多
-                    items.IsShowEmpty = true;
+                    items.IsShowEmpty = result.Count == 0;
 
                     //标识更多
-                    items.HasMoreItems = false;
+                    items.HasMoreItems = true;
 
                 }, async (result, items) =>
                 {

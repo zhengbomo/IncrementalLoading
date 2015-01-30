@@ -1,4 +1,4 @@
-﻿<Page x:Class="IncrementalLoadingDemo.MainPage"
+﻿<Page x:Class="IncrementalLoadingDemo.Views.EmptyPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:converters="using:IncrementalLoadingDemo.Converters"
@@ -7,7 +7,7 @@
       xmlns:sampleData="using:IncrementalLoadingDemo.SampleData"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
       Loaded="Page_Loaded"
-      d:DataContext="{d:DesignInstance Type=sampleData:MainPageSampleData,
+      d:DataContext="{d:DesignInstance Type=sampleData:EmptyPageSampleData,
                                        IsDesignTimeCreatable=True}"
       mc:Ignorable="d">
 
@@ -27,6 +27,13 @@
         <ListView Grid.Row="1"
                   Footer="{Binding Source}"
                   ItemsSource="{Binding Source}">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock FontSize="{StaticResource TextStyleLargeFontSize}" Text="{Binding}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
             <ListView.FooterTemplate>
                 <DataTemplate>
                     <Grid Height="80" Visibility="{Binding IsLoading, Converter={StaticResource VisibilityConverter}, ConverterParameter='bool'}">
@@ -38,6 +45,15 @@
             </ListView.FooterTemplate>
 
         </ListView>
+
+        <Grid Grid.Row="1" Visibility="{Binding Source.IsEmpty, Converter={StaticResource VisibilityConverter}, ConverterParameter='bool'}">
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource TextStyleLargeFontSize}"
+                       Text="Empty" />
+
+
+        </Grid>
     </Grid>
 
     <Page.BottomAppBar>

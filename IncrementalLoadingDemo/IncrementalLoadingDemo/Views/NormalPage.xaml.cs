@@ -1,15 +1,15 @@
 ﻿using Windows.UI.Xaml;
 using IncrementalLoadingDemo.SampleData;
 
-namespace IncrementalLoadingDemo
+namespace IncrementalLoadingDemo.Views
 {
-    public sealed partial class MainPage
+    public sealed partial class NormalPage
     {
-        private readonly MainPageSampleData source;
-        public MainPage()
+        private readonly NormalPageSampleData source;
+      public NormalPage()
         {
             InitializeComponent();
-            DataContext = source = new MainPageSampleData();
+            DataContext = source = new NormalPageSampleData();
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)

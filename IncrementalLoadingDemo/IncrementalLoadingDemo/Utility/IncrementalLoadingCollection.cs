@@ -15,7 +15,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
-namespace IncrementalLoading.Utility
+namespace IncrementalLoadingDemo.Utility
 {
     public class IncrementalLoadingCollection<T, TResult> : ObservableCollection<T>, ISupportIncrementalLoading
     {
@@ -37,13 +37,21 @@ namespace IncrementalLoading.Utility
         private bool isLoading;
         private bool isRefreshing;
 
+        /// <summary>
+        /// 刷新成功后设置为True
+        /// </summary>
+        public bool IsShowEmpty { get; set; }
+
         public bool HasMoreItems
         {
             get { return hasMoreItems; }
             set
             {
-                hasMoreItems = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("HasMoreItems"));
+                if (hasMoreItems != value)
+                {
+                    hasMoreItems = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("HasMoreItems"));
+                }
             }
         }
 
@@ -52,9 +60,13 @@ namespace IncrementalLoading.Utility
             get { return isRefreshing; }
             set
             {
-                isRefreshing = value;
-                IsLoading = false;
-                OnPropertyChanged(new PropertyChangedEventArgs("IsRefreshing"));
+                if (isRefreshing != value)
+                {
+                    isRefreshing = value;
+                    IsLoading = false;
+                    OnPropertyChanged(new PropertyChangedEventArgs("IsRefreshing"));
+                    OnPropertyChanged(new PropertyChangedEventArgs("IsEmpty"));
+                }
             }
         }
 
@@ -63,9 +75,17 @@ namespace IncrementalLoading.Utility
             get { return isLoading; }
             set
             {
-                isLoading = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("IsLoading"));
+                if (isLoading != value)
+                {
+                    isLoading = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("IsLoading"));
+                }
             }
+        }
+
+        public bool IsEmpty
+        {
+            get { return IsShowEmpty && Count == 0 && !isRefreshing && !isLoading; }
         }
 
         public IncrementalLoadingCollection(
@@ -156,6 +176,7 @@ namespace IncrementalLoading.Utility
             {
                 dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
+                    IsShowEmpty = false;
                     IsRefreshing = true;
                 });
                 var result = await refreshingRequestAction.Invoke();
@@ -163,21 +184,15 @@ namespace IncrementalLoading.Utility
                 //保存缓存
                 await saveCache.Invoke(result);
 
-                await Task.WhenAll(Task.Delay(10, cancel), dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await Task.WhenAll(Task.Delay(10, cancel), dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
                 {
-                    
                     //请求结果交给外部处理（添加项，缓存处理等）
-                    refreshingRequestResultAction.Invoke(result, this);
-
-                }).AsTask(cancel));
-
-                dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
+                    await refreshingRequestResultAction.Invoke(result, this);
                     IsRefreshing = false;
-                });
-
+                }).AsTask(cancel));
             });
 
         }
+
     }
 }
